@@ -5,5 +5,5 @@ Screenshot
 <img src="screenshot.png">
 
 Link
-<a href="https://github.com/jrdnwlkr/make-me-crazy">Repo</a>
-<a href="https://github.jrdnwlkr.io/make-me-crazy">Repo</a>
+<a href="https://github.com/jrdnwlkr/make-me-crazy">Repository</a><br>
+<a href="https://jrdnwlkr.github.io/make-me-crazy">Application</a>
