@@ -9,7 +9,7 @@ var initialsForm = document.querySelector("#initials-container");
 var score = '';
 var timerInterval;
 var userInitials;
-var scoreboard = [];
+var table = document.getElementById("resultsTable");
 var questions = [
     {
         "question": "What does HTML stand for?",
@@ -60,6 +60,7 @@ function showCurrentQuestion() {
         var answer = currentQuestion.options[i];
         optionsHTML += `<a class="btn btn-primary w-100 mb-2 text-start" data-index="${i}">${answer}</a>`
     }
+
     optionsHTML = `
     <div class="card shadow">
     <div class="card-body">
@@ -98,6 +99,8 @@ function checkAnswer(answer) {
     } else {
         endGame();
     }
+
+    return score
 }
 
 questionEl.addEventListener("click", function(event) {
@@ -145,20 +148,6 @@ function endGame() {
     questionEl.classList.add('hide')
 
     instructions.innerHTML = `<p>Your score is ${score}!</p>`;
-    // questionEl.innerHTML = 
-    // `<table class="table">
-    // <thead>
-    //   <tr>
-    //     <th scope="col">Initials</th>
-    //     <th scope="col">Score</th>
-    //   </tr>
-    // </thead>
-    // <tbody>
-    //   <tr>
-    //     <th scope="row">${userInitials}</th>
-    //     <td>${score}</td>
-    //   </tr>
-    //   </thead>`;
 }
 
 // WHEN the game is over
@@ -167,24 +156,49 @@ function endGame() {
 function saveScore(event) {
     // event.preventDefault();
     userInitials = document.getElementById("userInitials").value;
-    // initialsForm.classList.add("hide")
-    console.log(userInitials);
-    localStorage.setItem("User", userInitials);
+    if (userInitials) {
+
+    newWinner = {
+        "User": userInitials,
+        "Score": score
+    }
+
+    console.log(newWinner)
+
+    var storedScores = JSON.parse(localStorage.getItem("storedScores"))
+    if  (storedScores) {
+        storedScores.push(newWinner)
+        localStorage.setItem("storedScores", JSON.stringify(storedScores))
+    } else {
+        storedScores = []
+        storedScores.push(newWinner)
+        console.log("line186", storedScores)
+        localStorage.setItem("storedScores", JSON.stringify(storedScores))
+    }
+    renderScores()
+}
 }
 
-saveBtn.addEventListener("click", saveScore())
+var storedScores = []
+
+function renderScores() {
+    storedScores = JSON.parse(localStorage.getItem("storedScores"))
+    
+    var scoreHTML = "";
+
+    for (let i = 0; i < storedScores.length; i++) {
+        const {User, Score} = storedScores[i];
+        scoreHTML += `  
+        <tr>
+        <td>${User}</td>
+        <td>${Score}</td>
+        </tr>`
+    }
+
+    table.innerHTML = scoreHTML;
+} 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+saveBtn.addEventListener("click", saveScore()) 
 
